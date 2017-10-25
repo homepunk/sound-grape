@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="grapeBrowserViewModel"
+            type="com.github.homepunk.soundgrape.presentation.browser.viewmodel.GrapeBrowserViewModel" />
+
+        <variable
+            name="grapeListViewModel"
+            type="com.github.homepunk.soundgrape.presentation.browser.viewmodel.GrapeListViewModel" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.github.homepunk.soundgrape.presentation.browser.SoundGrapeBrowserActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_grape_browser_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_grape_browser_bookmarks_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/activity_grape_browser_toolbar"
+            app:adapter="@{grapeListViewModel.grapeAdapter}"
+            app:gridLayoutManager="@{grapeListViewModel.spanCount}"
+            app:onItemTouch="@{grapeListViewModel.onItemTouchEventListener}" />
+
+        <WebView
+            android:id="@+id/activity_grape_browser_web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{grapeBrowserViewModel.visibility}"
+            app:javaScriptEnabled="@{true}"
+            app:url="@{grapeBrowserViewModel.url}"
+            app:webViewClient="@{grapeBrowserViewModel.grapeWebViewClient}"
+            app:webChromeClient="@{grapeBrowserViewModel.grapeWebChromeClient}"/>
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+
+        applicationId globalConfiguration["androidApplicationId"]
+        versionCode globalConfiguration["androidVersionCode"]
+        versionName globalConfiguration["androidVersionName"]
+        testInstrumentationRunner globalConfiguration["testInstrumentationRunner"]
+        testApplicationId globalConfiguration["testApplicationId"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    def presentationDependencies = rootProject.ext.presentationDependencies;
+
+    compile project(':domain')
+    compile project(':data')
+
+    //  Logging
+    compile presentationDependencies.timber
+
+    //  Dependency injection
+    compile presentationDependencies.butterKnife
+    annotationProcessor presentationDependencies.butterKnifeProccessor
+
+    //  UI
+    compile presentationDependencies.circleImageView
+    compile presentationDependencies.materialMenuToolbar
+
+    //  Native UI
+    compile presentationDependencies.recyclerView
+    compile presentationDependencies.gridLayout
+    compile presentationDependencies.cardView
+    compile presentationDependencies.constraintLayout
+    compile presentationDependencies.appCompat
+    compile presentationDependencies.design
+    compile presentationDependencies.recyclerView
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+}
